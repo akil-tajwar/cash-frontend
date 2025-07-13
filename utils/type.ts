@@ -1,5 +1,4 @@
 import { isLastDayOfMonth } from 'date-fns'
-import { locationSchema } from '@/api/company-api'
 import { z } from 'zod'
 
 export const companySchema = z.object({
@@ -712,8 +711,6 @@ export interface MenuItem {
   name: string
   subItemGroups: SubItemGroup[]
 }
-
-export type LocationData = z.infer<typeof locationSchema>
 
 export interface LocationFromLocalstorage {
   location: {
