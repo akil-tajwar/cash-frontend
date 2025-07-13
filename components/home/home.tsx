@@ -31,7 +31,7 @@ export default function Home() {
       {/* Animated Background Elements */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-yellow-400/20 to-orange-400/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute top-1/2 right-10 w-96 h-96 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 right-10 w-96 h-96 bg-gradient-to-r from-yellow-400/20 to-purple-400/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
         <div className="absolute bottom-20 left-1/2 w-80 h-80 bg-gradient-to-r from-green-400/20 to-teal-400/20 rounded-full blur-3xl animate-pulse delay-2000"></div>
       </div>
 
@@ -121,7 +121,7 @@ export default function Home() {
 
                 <div className="absolute -bottom-8 -right-8 bg-white rounded-2xl shadow-2xl p-6 border border-gray-100 animate-bounce delay-1000 z-10">
                   <div className="flex items-center space-x-3">
-                    <div className="w-12 h-12 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-xl flex items-center justify-center">
+                    <div className="w-12 h-12 bg-gradient-to-r from-yellow-400 to-cyan-500 rounded-xl flex items-center justify-center">
                       <BarChart3 className="w-6 h-6 text-white" />
                     </div>
                     <div>
@@ -281,7 +281,7 @@ export default function Home() {
                 icon: Smartphone,
                 title: 'Mobile App',
                 desc: 'iOS & Android apps with offline capabilities',
-                color: 'from-blue-500 to-cyan-500',
+                color: 'from-yellow-500 to-cyan-500',
               },
               {
                 icon: Monitor,

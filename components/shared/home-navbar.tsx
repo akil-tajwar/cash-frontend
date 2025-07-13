@@ -120,7 +120,7 @@ const HomeNavbar = () => {
           >
             <div className="flex items-center">
               <span className="text-2xl font-bold text-gray-800">Biz</span>
-              <span className="text-2xl font-bold text-blue-500">Flow</span>
+              <span className="text-2xl font-bold text-yellow-500">Flow</span>
             </div>
           </a>
         </div>
@@ -143,8 +143,8 @@ const HomeNavbar = () => {
             }}
             className={
               active === '#'
-                ? 'font-medium text-blue-500 border-b-2 border-blue-500 pb-1 cursor-pointer'
-                : 'font-medium text-gray-800 hover:text-blue-500 cursor-pointer'
+                ? 'font-medium text-yellow-500 border-b-2 border-yellow-500 pb-1 cursor-pointer'
+                : 'font-medium text-gray-800 hover:text-yellow-500 cursor-pointer'
             }
           >
             HOME
@@ -157,8 +157,8 @@ const HomeNavbar = () => {
             }}
             className={
               active === '#features'
-                ? 'font-medium text-blue-500 border-b-2 border-blue-500 pb-1 cursor-pointer'
-                : 'font-medium text-gray-800 hover:text-blue-500 cursor-pointer'
+                ? 'font-medium text-yellow-500 border-b-2 border-yellow-500 pb-1 cursor-pointer'
+                : 'font-medium text-gray-800 hover:text-yellow-500 cursor-pointer'
             }
           >
             FEATURES
@@ -171,8 +171,8 @@ const HomeNavbar = () => {
             }}
             className={
               active === '#apps'
-                ? 'font-medium text-blue-500 border-b-2 border-blue-500 pb-1 cursor-pointer'
-                : 'font-medium text-gray-800 hover:text-blue-500 cursor-pointer'
+                ? 'font-medium text-yellow-500 border-b-2 border-yellow-500 pb-1 cursor-pointer'
+                : 'font-medium text-gray-800 hover:text-yellow-500 cursor-pointer'
             }
           >
             APPS
@@ -185,8 +185,8 @@ const HomeNavbar = () => {
             }}
             className={
               active === '#benefits'
-                ? 'font-medium text-blue-500 border-b-2 border-blue-500 pb-1 cursor-pointer'
-                : 'font-medium text-gray-800 hover:text-blue-500 cursor-pointer'
+                ? 'font-medium text-yellow-500 border-b-2 border-yellow-500 pb-1 cursor-pointer'
+                : 'font-medium text-gray-800 hover:text-yellow-500 cursor-pointer'
             }
           >
             BENEFITS
@@ -199,8 +199,8 @@ const HomeNavbar = () => {
             }}
             className={
               active === '#reviews'
-                ? 'font-medium text-blue-500 border-b-2 border-blue-500 pb-1 cursor-pointer'
-                : 'font-medium text-gray-800 hover:text-blue-500 cursor-pointer'
+                ? 'font-medium text-yellow-500 border-b-2 border-yellow-500 pb-1 cursor-pointer'
+                : 'font-medium text-gray-800 hover:text-yellow-500 cursor-pointer'
             }
           >
             REVIEWS
@@ -213,8 +213,8 @@ const HomeNavbar = () => {
             }}
             className={
               active === '#faqs'
-                ? 'font-medium text-blue-500 border-b-2 border-blue-500 pb-1 cursor-pointer'
-                : 'font-medium text-gray-800 hover:text-blue-500 cursor-pointer'
+                ? 'font-medium text-yellow-500 border-b-2 border-yellow-500 pb-1 cursor-pointer'
+                : 'font-medium text-gray-800 hover:text-yellow-500 cursor-pointer'
             }
           >
             FAQS
@@ -227,8 +227,8 @@ const HomeNavbar = () => {
             }}
             className={
               active === '#contact'
-                ? 'font-medium text-blue-500 border-b-2 border-blue-500 pb-1 cursor-pointer'
-                : 'font-medium text-gray-800 hover:text-blue-500 cursor-pointer'
+                ? 'font-medium text-yellow-500 border-b-2 border-yellow-500 pb-1 cursor-pointer'
+                : 'font-medium text-gray-800 hover:text-yellow-500 cursor-pointer'
             }
           >
             CONTACT US
@@ -286,7 +286,7 @@ const HomeNavbar = () => {
               </Link>
               <Link
                 href="/signin"
-                className="block w-full text-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors cursor-pointer"
+                className="block w-full text-center bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors cursor-pointer"
               >
                 SIGN IN
               </Link>
@@ -301,7 +301,7 @@ const HomeNavbar = () => {
           <div className="flex justify-between items-center p-4 border-b">
             <div className="flex items-center">
               <span className="text-xl font-bold text-gray-800">ASSET</span>
-              <span className="text-xl font-bold text-blue-500">TIGER</span>
+              <span className="text-xl font-bold text-yellow-500">TIGER</span>
             </div>
             <div className="cursor-pointer" onClick={() => setOpen(false)}>
               <X className="h-6 w-6 text-gray-800" />
@@ -317,7 +317,7 @@ const HomeNavbar = () => {
               }}
               className={
                 active === '#'
-                  ? 'text-blue-500 font-medium cursor-pointer'
+                  ? 'text-yellow-500 font-medium cursor-pointer'
                   : 'text-gray-800 font-medium cursor-pointer'
               }
             >
@@ -332,7 +332,7 @@ const HomeNavbar = () => {
               }}
               className={
                 active === '#features'
-                  ? 'text-blue-500 font-medium cursor-pointer'
+                  ? 'text-yellow-500 font-medium cursor-pointer'
                   : 'text-gray-800 font-medium cursor-pointer'
               }
             >
@@ -347,7 +347,7 @@ const HomeNavbar = () => {
               }}
               className={
                 active === '#apps'
-                  ? 'text-blue-500 font-medium cursor-pointer'
+                  ? 'text-yellow-500 font-medium cursor-pointer'
                   : 'text-gray-800 font-medium cursor-pointer'
               }
             >
@@ -362,7 +362,7 @@ const HomeNavbar = () => {
               }}
               className={
                 active === '#benefits'
-                  ? 'text-blue-500 font-medium cursor-pointer'
+                  ? 'text-yellow-500 font-medium cursor-pointer'
                   : 'text-gray-800 font-medium cursor-pointer'
               }
             >
@@ -377,7 +377,7 @@ const HomeNavbar = () => {
               }}
               className={
                 active === '#reviews'
-                  ? 'text-blue-500 font-medium cursor-pointer'
+                  ? 'text-yellow-500 font-medium cursor-pointer'
                   : 'text-gray-800 font-medium cursor-pointer'
               }
             >
@@ -392,7 +392,7 @@ const HomeNavbar = () => {
               }}
               className={
                 active === '#faqs'
-                  ? 'text-blue-500 font-medium cursor-pointer'
+                  ? 'text-yellow-500 font-medium cursor-pointer'
                   : 'text-gray-800 font-medium cursor-pointer'
               }
             >
@@ -407,7 +407,7 @@ const HomeNavbar = () => {
               }}
               className={
                 active === '#contact'
-                  ? 'text-blue-500 font-medium cursor-pointer'
+                  ? 'text-yellow-500 font-medium cursor-pointer'
                   : 'text-gray-800 font-medium cursor-pointer'
               }
             >
@@ -462,7 +462,7 @@ const HomeNavbar = () => {
                 </Link>
                 <Link
                   href="/signin"
-                  className="block w-full text-center bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors cursor-pointer"
+                  className="block w-full text-center bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition-colors cursor-pointer"
                 >
                   SIGN IN
                 </Link>

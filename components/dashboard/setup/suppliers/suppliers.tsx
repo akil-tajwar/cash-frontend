@@ -218,7 +218,7 @@ const Suppliers = () => {
                   <TableCell>
                     <span
                       className={`px-2 py-1 rounded-full text-xs ${
-                        supplier.type === "Supplier" ? "bg-blue-100 text-blue-800" : "bg-purple-100 text-purple-800"
+                        supplier.type === "Supplier" ? "bg-yellow-100 text-yellow-800" : "bg-purple-100 text-purple-800"
                       }`}
                     >
                       {supplier.type}
