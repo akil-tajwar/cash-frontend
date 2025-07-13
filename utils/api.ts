@@ -2,8 +2,10 @@ import { fetchApi } from '@/utils/http'
 import {
   CreateBankAccountType,
   CreateCompanyType,
+  CreateTransactionType,
   GetBankAccountType,
   GetCompanyType,
+  GetTransactionType,
 } from '@/utils/type'
 
 export async function createCompany(
@@ -50,6 +52,32 @@ export async function createBankAccount(
 export async function getBankAccounts(token: string) {
   return fetchApi<GetBankAccountType[]>({
     url: 'api/account-main/get-all-account-mains',
+    method: 'GET',
+    headers: {
+      Authorization: token,
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
+export async function createTransactions(
+  data: CreateTransactionType,
+  token: string
+) {
+  return fetchApi<CreateTransactionType>({
+    url: 'api/transaction/create-transaction',
+    method: 'POST',
+    body: data,
+    headers: {
+      Authorization: token,
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
+export async function getTransactions(token: string) {
+  return fetchApi<GetTransactionType[]>({
+    url: 'api/transaction/get-all-transactions',
     method: 'GET',
     headers: {
       Authorization: token,
