@@ -34,52 +34,6 @@ export function DashboardSidebar() {
       href: '/dashboard/dashboard-overview',
     },
     {
-      title: 'Assets',
-      icon: Settings,
-      href: '/dashboard/assets',
-      subItems: [
-        {
-          title: 'Assets',
-          href: '/dashboard/assets/assets',
-        },
-        {
-          title: 'Add Assets',
-          href: '/dashboard/assets/add-assets',
-        },
-        {
-          title: 'Asset Addition',
-          href: '/dashboard/assets/asset-addition',
-        },
-        {
-          title: 'Asset Retirement',
-          href: '/dashboard/assets/asset-retirement',
-        },
-        {
-          title: 'Dispose',
-          href: '/dashboard/assets/dispose',
-        },
-        {
-          title: 'Asset Depreciation',
-          href: '/dashboard/assets/asset-depreciation',
-        },
-      ],
-    },
-    {
-      title: 'Lists',
-      icon: Settings,
-      href: '/dashboard/lists',
-      subItems: [
-        {
-          title: 'Lists of Assets',
-          href: '/dashboard/lists/list-of-assets',
-        },
-        {
-          title: 'Lists of Warrenties',
-          href: '/dashboard/lists/list-of-warrenties',
-        },
-      ],
-    },
-    {
       title: 'Setup',
       icon: Settings,
       href: '/dashboard/setup',
@@ -89,74 +43,15 @@ export function DashboardSidebar() {
           href: '/dashboard/setup/company-info',
         },
         {
-          title: 'Locations & Sites',
-          href: '/dashboard/setup/locations-sites',
+          title: 'Bank Accounts',
+          href: '/dashboard/setup/bank-accounts',
         },
         {
-          title: 'Suppliers',
-          href: '/dashboard/setup/suppliers',
+          title: 'Transactions',
+          href: '/dashboard/setup/transactions',
         },
-        {
-          title: 'Depreciation Book',
-          href: '/dashboard/setup/depreciation-book',
-        },
-        {
-          title: 'Categories',
-          href: '/dashboard/setup/categories',
-        },
-        {
-          title: 'Departments',
-          href: '/dashboard/setup/departments',
-        },
-        {
-          title: 'Cost Centers',
-          href: '/dashboard/setup/cost-centers',
-        },
-        {
-          title: 'Events',
-          href: '/dashboard/setup/events',
-        },
-        {
-          title: 'Inventory',
-          href: '/dashboard/setup/inventory',
-        },
-        {
-          title: 'Options',
-          href: '/dashboard/setup/options',
-        },
-      ],},
-      {
-      title: 'Reports',
-      icon: Settings,
-      href: '/dashboard/reports',
-      subItems: [
-        {
-          title: 'Depreciation Report',
-          href: '/dashboard/report/depreciation-report',
-        },
-        {
-          title: 'Disposal Report',
-          href: '/dashboard/report/disposal-Report',
-        },
-        {
-          title: 'GL Depreciation Report',
-          href: '/dashboard/report/gl-depreciation-report',
-        },
-        {
-          title: 'Asset Info Report',
-          href: '/dashboard/report/asset-info-report',
-        },
-        {
-          title: 'Category & Sub-category Wise Accumulated Depreciation Report',
-          href: '/dashboard/report/cat-and-subcat-accu-dep-report',
-        },
-        {
-          title: 'Depreciation Info Report',
-          href: '/dashboard/report/depreciation-info-report',
-        },
-       
-      ],}
-
+      ],
+    },
   ]
 
   // Check if the current path is in the submenu items
@@ -187,7 +82,7 @@ export function DashboardSidebar() {
                     // Regular menu item without submenu
                     <SidebarMenuButton
                       asChild
-                      className={`${isItemActive(item) ? 'bg-blue-400 text-black hover:bg-blue-400' : ''}  `}
+                      className={`${isItemActive(item) ? 'bg-yellow-400 text-black hover:bg-yellow-400' : ''}  `}
                     >
                       <Link href={item.href}>
                         <item.icon className="mr-2 w-4" />
@@ -202,7 +97,7 @@ export function DashboardSidebar() {
                     >
                       <CollapsibleTrigger className="w-full" asChild>
                         <SidebarMenuButton
-                          className={`${isItemActive(item) ? 'bg-blue-400 text-black hover:bg-blue-400' : ''}  `}
+                          className={`${isItemActive(item) ? 'bg-yellow-400 text-black hover:bg-yellow-400' : ''}  `}
                         >
                           <item.icon className="mr-2 w-4" />
                           <span>{item.title}</span>
@@ -217,7 +112,12 @@ export function DashboardSidebar() {
                                 asChild
                                 className={`${pathname === subItem.href ? 'bg-gray-100 text-black' : ''}`}
                               >
-                                <Link className='h-auto mt-2' href={subItem.href}>{subItem.title}</Link>
+                                <Link
+                                  className="h-auto mt-2"
+                                  href={subItem.href}
+                                >
+                                  {subItem.title}
+                                </Link>
                               </SidebarMenuSubButton>
                             </SidebarMenuSubItem>
                           ))}

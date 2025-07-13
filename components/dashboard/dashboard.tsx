@@ -112,7 +112,7 @@ export default function Dashboard() {
             <tr className="border-b hover:bg-gray-50">
               <td className="py-3 px-4">Marketing Campaign</td>
               <td className="py-3 px-4">
-                <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">Planning</span>
+                <span className="px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs">Planning</span>
               </td>
               <td className="py-3 px-4">Marketing</td>
               <td className="py-3 px-4">Feb 1, 2024</td>
@@ -157,7 +157,7 @@ export default function Dashboard() {
           <div className="mt-2 flex gap-2">
             <button className="w-8 h-8 bg-white border-2 border-yellow-400 rounded-full"></button>
             <button className="w-8 h-8 bg-gray-800 rounded-full"></button>
-            <button className="w-8 h-8 bg-blue-500 rounded-full"></button>
+            <button className="w-8 h-8 bg-yellow-500 rounded-full"></button>
             <button className="w-8 h-8 bg-green-500 rounded-full"></button>
           </div>
         </div>

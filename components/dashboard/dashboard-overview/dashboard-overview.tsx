@@ -47,7 +47,7 @@ const DashboardOverview = () => {
       title: "Active Assets",
       value: "24",
       icon: Settings,
-      color: "bg-blue-500",
+      color: "bg-yellow-500",
       trend: "+12%",
       trendUp: true,
     },
@@ -142,7 +142,7 @@ const DashboardOverview = () => {
         <div
           key={day}
           className={`text-center p-2 text-sm cursor-pointer rounded-md transition-colors ${
-            isToday ? "bg-blue-500 text-white font-semibold" : "hover:bg-gray-100"
+            isToday ? "bg-yellow-500 text-white font-semibold" : "hover:bg-gray-100"
           }`}
         >
           {day}
@@ -244,7 +244,7 @@ const DashboardOverview = () => {
         <Card className="hover:shadow-lg transition-shadow duration-200">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <BarChart3 className="h-5 w-5 text-blue-600" />
+              <BarChart3 className="h-5 w-5 text-yellow-600" />
               Asset Value by Category
             </CardTitle>
           </CardHeader>
