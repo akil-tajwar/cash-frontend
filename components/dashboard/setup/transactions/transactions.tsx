@@ -22,26 +22,11 @@ import {
 } from '@/components/ui/select'
 import { Popup } from '@/utils/popup'
 import { useEffect } from 'react'
-import { createTransactions, getTransactions } from '@/utils/api'
+import { createTransactions, getBankAccounts, getTransactions } from '@/utils/api'
 import { tokenAtom, useInitializeUser, userDataAtom } from '@/utils/user'
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
-
-// Types based on the schema provided
-type CreateTransactionType = {
-  transactionDate?: string
-  transactionType: 'Deposite' | 'Withdraw'
-  details: string
-  amount: number
-}
-
-type GetTransactionType = {
-  id: number
-  transactionDate: string
-  transactionType: 'Deposite' | 'Withdraw'
-  details: string
-  amount: number
-}
+import { CreateTransactionType, GetBankAccountType, GetTransactionType } from '@/utils/type'
 
 const Transactions = () => {
   // State for popup visibility
@@ -68,13 +53,15 @@ const Transactions = () => {
   // State for form data
   const [formData, setFormData] = useState<CreateTransactionType>({
     transactionDate: new Date().toISOString().slice(0, 10), // Format for date input (YYYY-MM-DD)
+    accountId: 0,
     transactionType: 'Deposite',
-    details: '',
+    details: 'demo',
     amount: 0,
   })
 
   // State for transactions data
   const [transactions, setTransactions] = useState<GetTransactionType[]>([])
+  const [bankAccounts, setBankAccounts] = useState<GetBankAccountType[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -99,10 +86,32 @@ const Transactions = () => {
     }
   }, [token, router])
 
+  const fetchBankAccounts = useCallback(async () => {
+    if (!token) return
+    try {
+      setIsLoading(true)
+      const response = await getBankAccounts(token)
+      if (response?.error?.status === 401) {
+        router.push('/unauthorized-access')
+        return
+      } else {
+        console.log('🚀 ~ fetchBankAccounts ~ response:', response)
+        setBankAccounts(response.data ?? [])
+        setError(null)
+      }
+    } catch (err) {
+      setError('Failed to fetch bank accounts')
+      console.error(err)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [token, router])
+
   // Fetch transactions when component mounts
   useEffect(() => {
     fetchTransactions()
-  }, [fetchTransactions, token])
+    fetchBankAccounts()
+  }, [fetchTransactions, fetchBankAccounts, token])
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -113,6 +122,7 @@ const Transactions = () => {
         ...formData,
         amount: Number(formData.amount),
         transactionDate: formData.transactionDate || new Date().toISOString(),
+        accountId: Number(formData.accountId),
       }
       await createTransactions(dataToSubmit, token)
 
@@ -123,8 +133,9 @@ const Transactions = () => {
       // Reset form and close popup
       setFormData({
         transactionDate: new Date().toISOString().slice(0, 10), // Format for date input
+        accountId: 0,
         transactionType: 'Deposite',
-        details: '',
+        details: 'demo',
         amount: 0,
       })
       setIsPopupOpen(false)
@@ -202,6 +213,7 @@ const Transactions = () => {
         <Table>
           <TableHeader className="bg-amber-100">
             <TableRow>
+              <TableHead>Account</TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Type</TableHead>
               <TableHead>Details</TableHead>
@@ -233,6 +245,7 @@ const Transactions = () => {
             ) : (
               transactions.map((transaction) => (
                 <TableRow key={transaction.id}>
+                  <TableCell>{transaction.accountNumber}</TableCell>
                   <TableCell>
                     {formatDate(transaction.transactionDate)}
                   </TableCell>
@@ -275,7 +288,7 @@ const Transactions = () => {
         size="max-w-2xl h-2xl"
       >
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
-          <div className="grid gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="transactionDate">Transaction Date *</Label>
               <Input
@@ -316,6 +329,27 @@ const Transactions = () => {
                 placeholder="Enter transaction details"
                 required
               />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="accountId">Bank Account *</Label>
+              <Select
+                value={formData.accountId.toString()}
+                onValueChange={(value) =>
+                  handleSelectChange('accountId', value)
+                }
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select bank account" />
+                </SelectTrigger>
+                <SelectContent>
+                  {bankAccounts?.map((account) => (
+                    <SelectItem key={account.id} value={account.id.toString()}>
+                      {account.accountNo}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">

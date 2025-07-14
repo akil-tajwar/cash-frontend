@@ -41,6 +41,7 @@ export type CreateBankAccountType = z.infer<typeof createBankAccount>
 
 export const transactionSchema = z.object({
   id: z.number().int().positive(),
+  accountId: z.number().int().positive(),
   transactionDate: z
     .string()
     .datetime()
@@ -50,7 +51,9 @@ export const transactionSchema = z.object({
   amount: z.number().int(),
 })
 export const createTransactionSchema = transactionSchema.omit({ id: true })
-export type GetTransactionType = z.infer<typeof transactionSchema>
+export type GetTransactionType = z.infer<typeof transactionSchema> & {
+  accountNumber: number
+}
 export type CreateTransactionType = z.infer<typeof createTransactionSchema>
 
 export const SignInRequestSchema = z.object({
