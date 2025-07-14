@@ -17,8 +17,8 @@ import {
 } from '@/components/ui/card'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { EyeIcon, EyeOffIcon, LockIcon } from 'lucide-react'
-import { signIn } from '@/api/signin-api'
 import { toast } from '@/hooks/use-toast'
+import { signIn } from '@/utils/api'
 
 export default function SignIn() {
   const [username, setUsername] = useState('')
