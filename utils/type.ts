@@ -17,10 +17,10 @@ export const companySchema = z.object({
   active: z.boolean(),
   createdAt: z.string(),
   updatedAt: z.string(),
-});
-export const createCompanySchema = companySchema.omit({ companyId: true });
-export type GetCompanyType = z.infer<typeof companySchema>;
-export type CreateCompanyType = z.infer<typeof createCompanySchema>;
+})
+export const createCompanySchema = companySchema.omit({ companyId: true })
+export type GetCompanyType = z.infer<typeof companySchema>
+export type CreateCompanyType = z.infer<typeof createCompanySchema>
 
 export const bankAccount = z.object({
   id: z.number(),
@@ -34,12 +34,17 @@ export const bankAccount = z.object({
   companyId: z.number(),
 })
 export const createBankAccount = bankAccount.omit({ id: true })
-export type GetBankAccountType = z.infer<typeof bankAccount>
+export type GetBankAccountType = z.infer<typeof bankAccount> & {
+  companyName: string
+}
 export type CreateBankAccountType = z.infer<typeof createBankAccount>
 
 export const transactionSchema = z.object({
   id: z.number().int().positive(),
-  transactionDate: z.string().datetime().default(() => new Date().toISOString()),
+  transactionDate: z
+    .string()
+    .datetime()
+    .default(() => new Date().toISOString()),
   transactionType: z.enum(['Deposite', 'Withdraw']),
   details: z.enum(['demo']).default('demo'), // this will be come from another table
   amount: z.number().int(),
@@ -97,24 +102,6 @@ export const SignInResponseSchema = z.object({
 export type SignInRequest = z.infer<typeof SignInRequestSchema>
 export type SignInResponse = z.infer<typeof SignInResponseSchema>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export interface UserCompany {
   userId: number
   companyId: number
@@ -155,5 +142,3 @@ export interface LocationFromLocalstorage {
     companyId: number
   }
 }
-
-

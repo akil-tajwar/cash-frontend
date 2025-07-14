@@ -22,8 +22,12 @@ import {
 } from '@/components/ui/select'
 import { Popup } from '@/utils/popup'
 import { useEffect } from 'react'
-import type { GetBankAccountType } from '@/utils/type'
-import { createBankAccount, getBankAccounts } from '@/utils/api'
+import type { GetBankAccountType, GetCompanyType } from '@/utils/type'
+import {
+  createBankAccount,
+  getAllCompanies,
+  getBankAccounts,
+} from '@/utils/api'
 import { tokenAtom, useInitializeUser, userDataAtom } from '@/utils/user'
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
@@ -66,12 +70,12 @@ const BankAccounts = () => {
 
   // State for bank accounts data
   const [bankAccounts, setBankAccounts] = useState<GetBankAccountType[]>([])
+  const [companies, setCompanies] = useState<GetCompanyType[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
   const fetchBankAccounts = useCallback(async () => {
     if (!token) return
-
     try {
       setIsLoading(true)
       const response = await getBankAccounts(token)
@@ -91,10 +95,32 @@ const BankAccounts = () => {
     }
   }, [token, router])
 
+  const fetchCompanies = useCallback(async () => {
+    if (!token) return
+    try {
+      setIsLoading(true)
+      const response = await getAllCompanies(token)
+      if (response?.error?.status === 401) {
+        router.push('/unauthorized-access')
+        return
+      } else {
+        console.log('🚀 ~ fetchCompanies ~ response:', response)
+        setCompanies(response.data ?? [])
+        setError(null)
+      }
+    } catch (err) {
+      setError('Failed to fetch companies')
+      console.error(err)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [token])
+
   // Fetch bank accounts when component mounts
   useEffect(() => {
     fetchBankAccounts()
-  }, [fetchBankAccounts, token])
+    fetchCompanies()
+  }, [fetchBankAccounts, fetchCompanies, token])
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -193,7 +219,7 @@ const BankAccounts = () => {
               <TableHead>Balance</TableHead>
               <TableHead>Interest Rate</TableHead>
               <TableHead>Credit Limit</TableHead>
-              <TableHead>Company ID</TableHead>
+              <TableHead>Company</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -226,7 +252,7 @@ const BankAccounts = () => {
                     {/* {account.accountNo
                       ? `****${account.accountNo.toString().slice(-4)}`
                       : '-'} */}
-                      {account.accountNo || '-'}
+                    {account.accountNo || '-'}
                   </TableCell>
                   <TableCell>
                     {account.accountType === 1
@@ -250,7 +276,7 @@ const BankAccounts = () => {
                   <TableCell>
                     {account.limit ? `$${account.limit.toLocaleString()}` : '-'}
                   </TableCell>
-                  <TableCell>{account.companyId || '-'}</TableCell>
+                  <TableCell>{account.companyName || '-'}</TableCell>
                 </TableRow>
               ))
             )}
@@ -279,67 +305,76 @@ const BankAccounts = () => {
               />
             </div>
 
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="accountType">Account Type *</Label>
+                <Select
+                  value={formData.accountType.toString()}
+                  onValueChange={(value) =>
+                    handleSelectChange('accountType', Number.parseInt(value))
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select account type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="1">Checking</SelectItem>
+                    <SelectItem value="2">Savings</SelectItem>
+                    <SelectItem value="3">Business</SelectItem>
+                    <SelectItem value="4">Money Market</SelectItem>
+                    <SelectItem value="5">Term Deposit</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="accountNo">Account Number *</Label>
+                <Input
+                  id="accountNo"
+                  name="accountNo"
+                  type="number"
+                  value={formData.accountNo || ''}
+                  onChange={(e) => {
+                    const value = e.target.value
+                      ? Number.parseInt(e.target.value)
+                      : 0
+                    setFormData((prev) => ({
+                      ...prev,
+                      accountNo: value,
+                    }))
+                  }}
+                  placeholder="Enter account number"
+                  required
+                />
+              </div>
+            </div>
+
             <div className="space-y-2">
-              <Label htmlFor="accountType">Account Type *</Label>
+              <Label htmlFor="companyId">Company</Label>
               <Select
-                value={formData.accountType.toString()}
-                onValueChange={(value) =>
-                  handleSelectChange('accountType', Number.parseInt(value))
-                }
+                value={formData.companyId?.toString() || ''}
+                onValueChange={(value) => {
+                  const numValue = value ? Number.parseInt(value) : 0
+                  setFormData((prev) => ({
+                    ...prev,
+                    companyId: numValue,
+                  }))
+                }}
               >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select account type" />
+                <SelectTrigger id="companyId">
+                  <SelectValue placeholder="Select parent company" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="1">Checking</SelectItem>
-                  <SelectItem value="2">Savings</SelectItem>
-                  <SelectItem value="3">Business</SelectItem>
-                  <SelectItem value="4">Money Market</SelectItem>
-                  <SelectItem value="5">Term Deposit</SelectItem>
+                  {companies.map((company) => (
+                    <SelectItem
+                      key={company.companyId}
+                      value={company.companyId.toString()}
+                    >
+                      {company.companyName}
+                    </SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="accountNo">Account Number *</Label>
-              <Input
-                id="accountNo"
-                name="accountNo"
-                type="number"
-                value={formData.accountNo || ''}
-                onChange={(e) => {
-                  const value = e.target.value
-                    ? Number.parseInt(e.target.value)
-                    : 0
-                  setFormData((prev) => ({
-                    ...prev,
-                    accountNo: value,
-                  }))
-                }}
-                placeholder="Enter account number"
-                required
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="companyId">Company ID *</Label>
-              <Input
-                id="companyId"
-                name="companyId"
-                type="number"
-                value={formData.companyId || ''}
-                onChange={(e) => {
-                  const value = e.target.value
-                    ? Number.parseInt(e.target.value)
-                    : 0
-                  setFormData((prev) => ({
-                    ...prev,
-                    companyId: value,
-                  }))
-                }}
-                placeholder="Enter company ID"
-                required
-              />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
