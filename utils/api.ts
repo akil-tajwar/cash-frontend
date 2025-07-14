@@ -6,6 +6,9 @@ import {
   GetBankAccountType,
   GetCompanyType,
   GetTransactionType,
+  SignInRequest,
+  SignInResponse,
+  SignInResponseSchema,
 } from '@/utils/type'
 
 export async function createCompany(
@@ -83,5 +86,14 @@ export async function getTransactions(token: string) {
       Authorization: token,
       'Content-Type': 'application/json',
     },
+  })
+}
+
+export async function signIn(credentials: SignInRequest) {
+  return fetchApi<SignInResponse>({
+    url: 'api/auth/login',
+    method: 'POST',
+    body: credentials,
+    schema: SignInResponseSchema,
   })
 }

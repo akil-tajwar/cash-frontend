@@ -1,22 +1,22 @@
 import { z } from 'zod'
 
 export const companySchema = z.object({
-  companyId: z.number().int().positive(), // primary key
-  companyName: z.string().max(100),
-  address: z.string().max(255).nullable().optional(),
-  city: z.string().max(50).nullable().optional(),
-  state: z.string().max(50).nullable().optional(),
-  country: z.string().max(50).nullable().optional(),
-  postalCode: z.string().max(20).nullable().optional(),
-  phone: z.string().max(20).nullable().optional(),
-  email: z.string().email().max(100).nullable().optional(),
-  website: z.string().url().max(100).nullable().optional(),
-  taxId: z.string().max(50).nullable().optional(),
-  logo: z.string().nullable().optional(), // text column
-  parentCompanyId: z.number().int().positive().nullable().optional(),
-  active: z.boolean().optional(), // default is true
-  createdAt: z.string().datetime().optional(), // timestamp
-  updatedAt: z.string().datetime().optional(), // timestamp
+  companyId: z.number(),
+  companyName: z.string(),
+  address: z.string().nullable(),
+  city: z.string().nullable(),
+  state: z.string().nullable(),
+  country: z.string().nullable(),
+  postalCode: z.string().nullable(),
+  phone: z.string().nullable(),
+  email: z.string().nullable(),
+  website: z.string().nullable(),
+  taxId: z.string().nullable(),
+  logo: z.string().nullable(),
+  parentCompanyId: z.number().nullable(),
+  active: z.boolean(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 export const createCompanySchema = companySchema.omit({ companyId: true });
 export type GetCompanyType = z.infer<typeof companySchema>;
@@ -41,12 +41,61 @@ export const transactionSchema = z.object({
   id: z.number().int().positive(),
   transactionDate: z.string().datetime().default(() => new Date().toISOString()),
   transactionType: z.enum(['Deposite', 'Withdraw']),
-  details: z.string(),
+  details: z.enum(['demo']).default('demo'), // this will be come from another table
   amount: z.number().int(),
 })
 export const createTransactionSchema = transactionSchema.omit({ id: true })
 export type GetTransactionType = z.infer<typeof transactionSchema>
 export type CreateTransactionType = z.infer<typeof createTransactionSchema>
+
+export const SignInRequestSchema = z.object({
+  username: z.string().min(1),
+  password: z.string().min(1),
+})
+
+export const PermissionSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+})
+
+export const RolePermissionSchema = z.object({
+  roleId: z.number(),
+  permissionId: z.number(),
+  permission: PermissionSchema,
+})
+
+export const RoleSchema = z.object({
+  roleId: z.number(),
+  roleName: z.string(),
+  rolePermissions: z.array(RolePermissionSchema),
+})
+
+export const UserCompanySchema = z.object({
+  userId: z.number(),
+  companyId: z.number(),
+  company: companySchema,
+})
+
+export const UserSchema = z.object({
+  userId: z.number(),
+  username: z.string(),
+  password: z.string(),
+  active: z.boolean(),
+  roleId: z.number(),
+  isPasswordResetRequired: z.boolean(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  role: RoleSchema,
+  userCompanies: z.array(UserCompanySchema),
+})
+
+export const SignInResponseSchema = z.object({
+  token: z.string(),
+  user: UserSchema,
+})
+
+export type SignInRequest = z.infer<typeof SignInRequestSchema>
+export type SignInResponse = z.infer<typeof SignInResponseSchema>
 
 
 
