@@ -20,12 +20,19 @@ import { createCompany, getAllCompanies } from '@/utils/api'
 import { tokenAtom, useInitializeUser, userDataAtom } from '@/utils/user'
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 const CompanyInfo = () => {
   // State for popup visibility
   const [isPopupOpen, setIsPopupOpen] = useState(false)
 
- useInitializeUser()
+  useInitializeUser()
   const [userData] = useAtom(userDataAtom)
   const [token] = useAtom(tokenAtom)
 
@@ -239,7 +246,7 @@ const CompanyInfo = () => {
         size="max-w-2xl h-2xl"
       >
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
-          <div className="grid gap-4">
+          <div className="grid gap-2">
             <div className="space-y-2">
               <Label htmlFor="companyName">Company Name</Label>
               <Input
@@ -291,7 +298,7 @@ const CompanyInfo = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="city">City</Label>
                 <Input
@@ -311,19 +318,6 @@ const CompanyInfo = () => {
                   onChange={handleInputChange}
                 />
               </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="country">Country</Label>
-                <Input
-                  id="country"
-                  name="country"
-                  value={formData.country}
-                  onChange={handleInputChange}
-                />
-              </div>
-
               <div className="space-y-2">
                 <Label htmlFor="postalCode">Postal Code</Label>
                 <Input
@@ -335,7 +329,7 @@ const CompanyInfo = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="phone">Phone</Label>
                 <Input
@@ -356,19 +350,21 @@ const CompanyInfo = () => {
                   onChange={handleInputChange}
                 />
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="website">Website</Label>
-              <Input
-                id="website"
-                name="website"
-                type="url"
-                value={formData.website}
-                onChange={handleInputChange}
-              />
+              <div className="space-y-2">
+                <Label htmlFor="website">Website</Label>
+                <Input
+                  id="website"
+                  name="website"
+                  type="url"
+                  value={formData.website}
+                  onChange={handleInputChange}
+                />
+              </div>
             </div>
+          </div>
 
+          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="taxId">Tax ID</Label>
               <Input
@@ -381,21 +377,30 @@ const CompanyInfo = () => {
 
             <div className="space-y-2">
               <Label htmlFor="parentCompanyId">Parent Company ID</Label>
-              <Input
-                id="parentCompanyId"
-                name="parentCompanyId"
-                type="number"
-                value={formData.parentCompanyId || ''}
-                onChange={(e) => {
-                  const value = e.target.value
-                    ? Number.parseInt(e.target.value)
-                    : null
+              <Select
+                value={formData.parentCompanyId?.toString() || ''}
+                onValueChange={(value) => {
+                  const numValue = value ? Number.parseInt(value) : null
                   setFormData((prev) => ({
                     ...prev,
-                    parentCompanyId: value,
+                    parentCompanyId: numValue,
                   }))
                 }}
-              />
+              >
+                <SelectTrigger id="parentCompanyId">
+                  <SelectValue placeholder="Select parent company" />
+                </SelectTrigger>
+                <SelectContent>
+                  {companies.map((company) => (
+                    <SelectItem
+                      key={company.companyId}
+                      value={company.companyId.toString()}
+                    >
+                      {company.companyName}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="flex items-center space-x-2">
