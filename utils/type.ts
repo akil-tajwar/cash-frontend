@@ -46,7 +46,7 @@ export const transactionSchema = z.object({
     .string()
     .datetime()
     .default(() => new Date().toISOString()),
-  transactionType: z.enum(['Deposite', 'Withdraw']),
+  transactionType: z.enum(['Deposit', 'Withdraw']),
   details: z.enum(['demo']).default('demo'), // this will be come from another table
   amount: z.number().int(),
 })
@@ -145,3 +145,21 @@ export interface LocationFromLocalstorage {
     companyId: number
   }
 }
+
+const AccountEntrySchema = z.object({
+  companyId: z.number(),
+  companyName: z.string(),
+  accountNo: z.number(),
+  limit: z.number(),
+  typeId: z.number(),
+  interestRate: z.string(), // because it's quoted as a string (e.g., "91.00")
+  bank: z.string(),
+  openingBalance: z.number(),
+  deposit: z.number(),
+  withdrawal: z.number(),
+  closingBalance: z.number()
+});
+
+// The full report schema with dynamic company keys
+export const CashFlowLoanReportSchema = z.record(z.string(), z.array(AccountEntrySchema));
+export type GetCashFlowLoanReportType = z.infer<typeof CashFlowLoanReportSchema>;

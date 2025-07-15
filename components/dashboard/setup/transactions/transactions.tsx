@@ -54,7 +54,7 @@ const Transactions = () => {
   const [formData, setFormData] = useState<CreateTransactionType>({
     transactionDate: new Date().toISOString().slice(0, 10), // Format for date input (YYYY-MM-DD)
     accountId: 0,
-    transactionType: 'Deposite',
+    transactionType: 'Deposit',
     details: 'demo',
     amount: 0,
   })
@@ -134,7 +134,7 @@ const Transactions = () => {
       setFormData({
         transactionDate: new Date().toISOString().slice(0, 10), // Format for date input
         accountId: 0,
-        transactionType: 'Deposite',
+        transactionType: 'Deposit',
         details: 'demo',
         amount: 0,
       })
@@ -252,7 +252,7 @@ const Transactions = () => {
                   <TableCell>
                     <span
                       className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        transaction.transactionType === 'Deposite'
+                        transaction.transactionType === 'Deposit'
                           ? 'bg-green-100 text-green-800'
                           : 'bg-red-100 text-red-800'
                       }`}
@@ -264,12 +264,12 @@ const Transactions = () => {
                   <TableCell>
                     <span
                       className={
-                        transaction.transactionType === 'Deposite'
+                        transaction.transactionType === 'Deposit'
                           ? 'text-green-600'
                           : 'text-red-600'
                       }
                     >
-                      {transaction.transactionType === 'Deposite' ? '+' : '-'}$
+                      {transaction.transactionType === 'Deposit' ? '+' : '-'}$
                       {transaction.amount.toLocaleString()}
                     </span>
                   </TableCell>
@@ -313,7 +313,7 @@ const Transactions = () => {
                   <SelectValue placeholder="Select transaction type" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Deposite">Deposit</SelectItem>
+                  <SelectItem value="Deposit">Deposit</SelectItem>
                   <SelectItem value="Withdraw">Withdraw</SelectItem>
                 </SelectContent>
               </Select>
