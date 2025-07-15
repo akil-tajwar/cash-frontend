@@ -4,6 +4,7 @@ import {
   CreateCompanyType,
   CreateTransactionType,
   GetBankAccountType,
+  GetCashFlowLoanReportType,
   GetCompanyType,
   GetTransactionType,
   SignInRequest,
@@ -95,5 +96,19 @@ export async function signIn(credentials: SignInRequest) {
     method: 'POST',
     body: credentials,
     schema: SignInResponseSchema,
+  })
+}
+
+export async function getCashFlowLoanAcReport(
+  date: string,
+  token: string
+) {
+  return fetchApi<GetCashFlowLoanReportType>({
+    url: `api/report/get-cash-flow-loan-report?date=${date}`,
+    method: 'GET',
+    headers: {
+      Authorization: token,
+      'Content-Type': 'application/json',
+    },
   })
 }

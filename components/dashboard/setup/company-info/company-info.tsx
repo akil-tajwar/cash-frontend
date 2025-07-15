@@ -376,7 +376,7 @@ const CompanyInfo = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="parentCompanyId">Parent Company ID</Label>
+              <Label htmlFor="parentCompanyId">Parent Company</Label>
               <Select
                 value={formData.parentCompanyId?.toString() || ''}
                 onValueChange={(value) => {

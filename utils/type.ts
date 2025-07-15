@@ -17,10 +17,10 @@ export const companySchema = z.object({
   active: z.boolean(),
   createdAt: z.string(),
   updatedAt: z.string(),
-});
-export const createCompanySchema = companySchema.omit({ companyId: true });
-export type GetCompanyType = z.infer<typeof companySchema>;
-export type CreateCompanyType = z.infer<typeof createCompanySchema>;
+})
+export const createCompanySchema = companySchema.omit({ companyId: true })
+export type GetCompanyType = z.infer<typeof companySchema>
+export type CreateCompanyType = z.infer<typeof createCompanySchema>
 
 export const bankAccount = z.object({
   id: z.number(),
@@ -34,18 +34,26 @@ export const bankAccount = z.object({
   companyId: z.number(),
 })
 export const createBankAccount = bankAccount.omit({ id: true })
-export type GetBankAccountType = z.infer<typeof bankAccount>
+export type GetBankAccountType = z.infer<typeof bankAccount> & {
+  companyName: string
+}
 export type CreateBankAccountType = z.infer<typeof createBankAccount>
 
 export const transactionSchema = z.object({
   id: z.number().int().positive(),
-  transactionDate: z.string().datetime().default(() => new Date().toISOString()),
-  transactionType: z.enum(['Deposite', 'Withdraw']),
+  accountId: z.number().int().positive(),
+  transactionDate: z
+    .string()
+    .datetime()
+    .default(() => new Date().toISOString()),
+  transactionType: z.enum(['Deposit', 'Withdraw']),
   details: z.enum(['demo']).default('demo'), // this will be come from another table
   amount: z.number().int(),
 })
 export const createTransactionSchema = transactionSchema.omit({ id: true })
-export type GetTransactionType = z.infer<typeof transactionSchema>
+export type GetTransactionType = z.infer<typeof transactionSchema> & {
+  accountNumber: number
+}
 export type CreateTransactionType = z.infer<typeof createTransactionSchema>
 
 export const SignInRequestSchema = z.object({
@@ -97,24 +105,6 @@ export const SignInResponseSchema = z.object({
 export type SignInRequest = z.infer<typeof SignInRequestSchema>
 export type SignInResponse = z.infer<typeof SignInResponseSchema>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 export interface UserCompany {
   userId: number
   companyId: number
@@ -156,4 +146,20 @@ export interface LocationFromLocalstorage {
   }
 }
 
+const AccountEntrySchema = z.object({
+  companyId: z.number(),
+  companyName: z.string(),
+  accountNo: z.number(),
+  limit: z.number(),
+  typeId: z.number(),
+  interestRate: z.string(), // because it's quoted as a string (e.g., "91.00")
+  bank: z.string(),
+  openingBalance: z.number(),
+  deposit: z.number(),
+  withdrawal: z.number(),
+  closingBalance: z.number()
+});
 
+// The full report schema with dynamic company keys
+export const CashFlowLoanReportSchema = z.record(z.string(), z.array(AccountEntrySchema));
+export type GetCashFlowLoanReportType = z.infer<typeof CashFlowLoanReportSchema>;

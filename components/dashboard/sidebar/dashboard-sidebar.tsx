@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { ChevronDown, Home, Settings } from 'lucide-react'
+import { ChevronDown, File, Home, Settings } from 'lucide-react'
 
 import {
   Collapsible,
@@ -49,6 +49,17 @@ export function DashboardSidebar() {
         {
           title: 'Transactions',
           href: '/dashboard/setup/transactions',
+        },
+      ],
+    },
+    {
+      title: 'Reports',
+      icon: File,
+      href: '/dashboard/reports',
+      subItems: [
+        {
+          title: 'Cash Flow Loan AC',
+          href: '/dashboard/reports/cash-flow-loan-ac',
         },
       ],
     },
