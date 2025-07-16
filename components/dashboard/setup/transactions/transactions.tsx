@@ -27,6 +27,7 @@ import { tokenAtom, useInitializeUser, userDataAtom } from '@/utils/user'
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
 import { CreateTransactionType, GetBankAccountType, GetTransactionType } from '@/utils/type'
+import { CustomCombobox } from '@/utils/custom-combobox'
 
 const Transactions = () => {
   // State for popup visibility
@@ -332,24 +333,30 @@ const Transactions = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="accountId">Bank Account *</Label>
-              <Select
-                value={formData.accountId.toString()}
-                onValueChange={(value) =>
-                  handleSelectChange('accountId', value)
+              <Label htmlFor="bankId">Bank Account *</Label>
+              <CustomCombobox
+                items={bankAccounts
+                  .filter((bank) => bank.id !== undefined)
+                  .map((bank) => ({
+                    id: bank.id!.toString(),
+                    name: `${bank.accountNo} - ${bank.bankName}`,
+                  }))}
+                value={formData.accountId
+                  ? {
+                      id: formData.accountId.toString(),
+                      name: bankAccounts.find((bank) => bank.id === formData.accountId)?.accountNo || 'Unnamed Bank',
+                    }
+                  : null
                 }
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select bank account" />
-                </SelectTrigger>
-                <SelectContent>
-                  {bankAccounts?.map((account) => (
-                    <SelectItem key={account.id} value={account.id.toString()}>
-                      {account.accountNo}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                onChange={(value: { id: string; name: string } | null) => {
+                  const numValue = value ? Number.parseInt(value.id, 10) : 0
+                  setFormData((prev) => ({
+                    ...prev,
+                    bankId: numValue
+                  }))
+                }}
+                placeholder="Select bank"
+              />
             </div>
 
             <div className="space-y-2">

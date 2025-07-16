@@ -22,22 +22,32 @@ export const createCompanySchema = companySchema.omit({ companyId: true })
 export type GetCompanyType = z.infer<typeof companySchema>
 export type CreateCompanyType = z.infer<typeof createCompanySchema>
 
-export const bankAccount = z.object({
+export const banksSchema = z.object({
+  id: z.number().int().positive().optional(), // Optional for insert, present when selecting
+  bankName: z.string().max(100),
+  bankShortCode: z.string().max(100),
+});
+export const createBanksSchema = banksSchema.omit({ id: true })
+export type GetBanksType = z.infer<typeof banksSchema>
+export type CreateBanksType = z.infer<typeof createBanksSchema>
+
+export const bankAccountSchema = z.object({
   id: z.number(),
-  bankName: z.string().min(1, 'Bank name is required'),
+  bankId: z.number(),
+  bankName: z.string(),
   accountType: z.number(),
-  accountNo: z.number(),
+  accountNo: z.string(),
   limit: z.number().optional(),
   interestRate: z.number().optional(),
   balance: z.number().default(0),
   term: z.number().optional(),
   companyId: z.number(),
 })
-export const createBankAccount = bankAccount.omit({ id: true })
-export type GetBankAccountType = z.infer<typeof bankAccount> & {
+export const createBankAccountSchema = bankAccountSchema.omit({ id: true })
+export type GetBankAccountType = z.infer<typeof bankAccountSchema> & {
   companyName: string
 }
-export type CreateBankAccountType = z.infer<typeof createBankAccount>
+export type CreateBankAccountType = z.infer<typeof createBankAccountSchema>
 
 export const transactionSchema = z.object({
   id: z.number().int().positive(),
