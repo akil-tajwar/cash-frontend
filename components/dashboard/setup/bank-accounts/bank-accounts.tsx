@@ -22,15 +22,17 @@ import {
 } from '@/components/ui/select'
 import { Popup } from '@/utils/popup'
 import { useEffect } from 'react'
-import type { GetBankAccountType, GetCompanyType } from '@/utils/type'
+import type { GetBankAccountType, GetBanksType, GetCompanyType } from '@/utils/type'
 import {
   createBankAccount,
   getAllCompanies,
   getBankAccounts,
+  getBanks,
 } from '@/utils/api'
 import { tokenAtom, useInitializeUser, userDataAtom } from '@/utils/user'
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
+import { CustomCombobox } from '@/utils/custom-combobox'
 
 const BankAccounts = () => {
   // State for popup visibility
@@ -58,9 +60,9 @@ const BankAccounts = () => {
 
   // State for form data
   const [formData, setFormData] = useState({
-    bankName: '',
+    bankId: 0,
     accountType: 1,
-    accountNo: 0,
+    accountNo: '',
     limit: undefined as number | undefined,
     interestRate: undefined as number | undefined,
     balance: 0,
@@ -70,9 +72,31 @@ const BankAccounts = () => {
 
   // State for bank accounts data
   const [bankAccounts, setBankAccounts] = useState<GetBankAccountType[]>([])
+  const [banks, setBanks] = useState<GetBanksType[]>([])
   const [companies, setCompanies] = useState<GetCompanyType[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+
+  const fetchBanks = useCallback(async () => {
+    if (!token) return
+    try {
+      setIsLoading(true)
+      const response = await getBanks(token)
+      if (response?.error?.status === 401) {
+        router.push('/unauthorized-access')
+        return
+      } else {
+        console.log('🚀 ~ fetchBanks ~ response:', response)
+        setBanks(response.data ?? [])
+        setError(null)
+      }
+    } catch (err) {
+      setError('Failed to fetch banks')
+      console.error(err)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [token, router])
 
   const fetchBankAccounts = useCallback(async () => {
     if (!token) return
@@ -120,7 +144,8 @@ const BankAccounts = () => {
   useEffect(() => {
     fetchBankAccounts()
     fetchCompanies()
-  }, [fetchBankAccounts, fetchCompanies, token])
+    fetchBanks()
+  }, [fetchBankAccounts, fetchCompanies, fetchBanks, token])
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
@@ -141,9 +166,9 @@ const BankAccounts = () => {
 
       // Reset form and close popup
       setFormData({
-        bankName: '',
+        bankId: 0,
         accountType: 1,
-        accountNo: 0,
+        accountNo: '',
         limit: undefined,
         interestRate: undefined,
         balance: 0,
@@ -294,37 +319,56 @@ const BankAccounts = () => {
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
           <div className="grid gap-4">
             <div className="space-y-2">
-              <Label htmlFor="bankName">Bank Name *</Label>
-              <Input
-                id="bankName"
-                name="bankName"
-                value={formData.bankName}
-                onChange={handleInputChange}
-                placeholder="e.g., Chase Bank"
-                required
+              <Label htmlFor="bankId">Bank Name *</Label>
+              <CustomCombobox
+                items={banks
+                  .filter((bank) => bank.id !== undefined)
+                  .map((bank) => ({
+                    id: bank.id!.toString(),
+                    name: bank.bankName || 'Unnamed Bank',
+                  }))}
+                value={formData.bankId
+                  ? {
+                      id: formData.bankId.toString(),
+                      name: banks.find((bank) => bank.id === formData.bankId)?.bankName || 'Unnamed Bank',
+                    }
+                  : null
+                }
+                onChange={(value: { id: string; name: string } | null) => {
+                  const numValue = value ? Number.parseInt(value.id, 10) : 0
+                  setFormData((prev) => ({
+                    ...prev,
+                    bankId: numValue
+                  }))
+                }}
+                placeholder="Select bank"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="accountType">Account Type *</Label>
-                <Select
-                  value={formData.accountType.toString()}
-                  onValueChange={(value) =>
-                    handleSelectChange('accountType', Number.parseInt(value))
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select account type" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="1">Checking</SelectItem>
-                    <SelectItem value="2">Savings</SelectItem>
-                    <SelectItem value="3">Business</SelectItem>
-                    <SelectItem value="4">Money Market</SelectItem>
-                    <SelectItem value="5">Term Deposit</SelectItem>
-                  </SelectContent>
-                </Select>
+                <CustomCombobox
+                  items={[
+                    { id: "1", name: "Checking" },
+                    { id: "2", name: "Savings" },
+                    { id: "3", name: "Business" },
+                    { id: "4", name: "Money Market" },
+                    { id: "5", name: "Term Deposit" }
+                  ]}
+                  value={formData.accountType ? {
+                    id: formData.accountType.toString(),
+                    name: ["", "Checking", "Savings", "Business", "Money Market", "Term Deposit"][formData.accountType]
+                  } : null}
+                  onChange={(value: { id: string; name: string } | null) => {
+                    const numValue = value ? Number.parseInt(value.id, 10) : 0
+                    setFormData((prev) => ({
+                      ...prev,
+                      accountType: numValue
+                    }))
+                  }}
+                  placeholder="Select account type"
+                />
               </div>
 
               <div className="space-y-2">
@@ -332,12 +376,9 @@ const BankAccounts = () => {
                 <Input
                   id="accountNo"
                   name="accountNo"
-                  type="number"
                   value={formData.accountNo || ''}
                   onChange={(e) => {
                     const value = e.target.value
-                      ? Number.parseInt(e.target.value)
-                      : 0
                     setFormData((prev) => ({
                       ...prev,
                       accountNo: value,
@@ -351,30 +392,29 @@ const BankAccounts = () => {
 
             <div className="space-y-2">
               <Label htmlFor="companyId">Company</Label>
-              <Select
-                value={formData.companyId?.toString() || ''}
-                onValueChange={(value) => {
-                  const numValue = value ? Number.parseInt(value) : 0
+              <CustomCombobox
+                items={companies
+                  .filter((company) => company.companyId !== undefined)
+                  .map((company) => ({
+                    id: company.companyId.toString(),
+                    name: company.companyName || 'Unnamed Company',
+                  }))}
+                value={formData.companyId
+                  ? {
+                      id: formData.companyId.toString(),
+                      name: companies.find((company) => company.companyId === formData.companyId)?.companyName || 'Unnamed Company',
+                    }
+                  : null
+                }
+                onChange={(value: { id: string; name: string } | null) => {
+                  const numValue = value ? Number.parseInt(value.id, 10) : 0
                   setFormData((prev) => ({
                     ...prev,
-                    companyId: numValue,
+                    companyId: numValue
                   }))
                 }}
-              >
-                <SelectTrigger id="companyId">
-                  <SelectValue placeholder="Select parent company" />
-                </SelectTrigger>
-                <SelectContent>
-                  {companies.map((company) => (
-                    <SelectItem
-                      key={company.companyId}
-                      value={company.companyId.toString()}
-                    >
-                      {company.companyName}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                placeholder="Select parent company"
+              />
             </div>
 
             <div className="grid grid-cols-2 gap-4">

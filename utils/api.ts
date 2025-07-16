@@ -4,6 +4,7 @@ import {
   CreateCompanyType,
   CreateTransactionType,
   GetBankAccountType,
+  GetBanksType,
   GetCashFlowLoanReportType,
   GetCompanyType,
   GetTransactionType,
@@ -56,6 +57,17 @@ export async function createBankAccount(
 export async function getBankAccounts(token: string) {
   return fetchApi<GetBankAccountType[]>({
     url: 'api/account-main/get-all-account-mains',
+    method: 'GET',
+    headers: {
+      Authorization: token,
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
+export async function getBanks(token: string) {
+  return fetchApi<GetBanksType[]>({
+    url: 'api/banks/get-all-banks',
     method: 'GET',
     headers: {
       Authorization: token,
