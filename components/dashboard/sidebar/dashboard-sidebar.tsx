@@ -61,6 +61,10 @@ export function DashboardSidebar() {
           title: 'Cash Flow Loan AC',
           href: '/dashboard/reports/cash-flow-loan-ac',
         },
+        {
+          title: 'Interest Rate Report',
+          href: '/dashboard/reports/interest-rate-report',
+        },
       ],
     },
   ]

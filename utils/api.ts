@@ -7,6 +7,7 @@ import {
   GetBanksType,
   GetCashFlowLoanReportType,
   GetCompanyType,
+  GetInterestRateReportType,
   GetTransactionType,
   SignInRequest,
   SignInResponse,
@@ -117,6 +118,20 @@ export async function getCashFlowLoanAcReport(
 ) {
   return fetchApi<GetCashFlowLoanReportType>({
     url: `api/report/get-cash-flow-loan-report?date=${date}`,
+    method: 'GET',
+    headers: {
+      Authorization: token,
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
+export async function getInterestRateReport(
+  reportDate: string,
+  token: string
+) {
+  return fetchApi<GetInterestRateReportType>({
+    url: `api/report/getbyInterestRate?reportDate=${reportDate}`,
     method: 'GET',
     headers: {
       Authorization: token,
