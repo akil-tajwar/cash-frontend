@@ -189,3 +189,11 @@ const InterestRateFlatReportSchema = z.object({
   balancePercent: z.number()
 });
 export type GetInterestRateFlatReportType = z.infer<typeof InterestRateFlatReportSchema>;
+
+const BankUtilizationReportSchema = z.object({
+  bankName: z.string(),
+  limit: z.string(),
+  balanceOnDate: z.string(),
+  utilizePercent: z.number()
+});
+export type GetBankUtilizationReportType = z.infer<typeof BankUtilizationReportSchema>;

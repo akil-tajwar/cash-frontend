@@ -69,6 +69,10 @@ export function DashboardSidebar() {
           title: 'Interest Rate Flat Report',
           href: '/dashboard/reports/interest-rate-flat-report',
         },
+        {
+          title: 'Bank Utilization Report',
+          href: '/dashboard/reports/bank-utilization-report',
+        },
       ],
     },
   ]

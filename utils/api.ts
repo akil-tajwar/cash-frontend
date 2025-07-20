@@ -5,6 +5,7 @@ import {
   CreateTransactionType,
   GetBankAccountType,
   GetBanksType,
+  GetBankUtilizationReportType,
   GetCashFlowLoanReportType,
   GetCompanyType,
   GetInterestRateFlatReportType,
@@ -147,6 +148,20 @@ export async function getInterestRateFlatReport(
 ) {
   return fetchApi<GetInterestRateFlatReportType>({
     url: `api/report/getbyIntRateFlat?reportDate=${reportDate}`,
+    method: 'GET',
+    headers: {
+      Authorization: token,
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
+export async function getBankUtilizationReport(
+  reportDate: string,
+  token: string
+) {
+  return fetchApi<GetBankUtilizationReportType>({
+    url: `api/report/getUtilzationbyBank?reportDate=${reportDate}`,
     method: 'GET',
     headers: {
       Authorization: token,
