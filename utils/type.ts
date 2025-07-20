@@ -182,3 +182,10 @@ const InterestRateReportSchema = z.object({
   balancePercent: z.number()
 });
 export type GetInterestRateReportType = z.infer<typeof InterestRateReportSchema>;
+
+const InterestRateFlatReportSchema = z.object({
+  interestRate: z.string(),
+  balanceOnDate: z.string(),
+  balancePercent: z.number()
+});
+export type GetInterestRateFlatReportType = z.infer<typeof InterestRateFlatReportSchema>;

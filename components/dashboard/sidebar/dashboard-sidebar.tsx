@@ -65,6 +65,10 @@ export function DashboardSidebar() {
           title: 'Interest Rate Report',
           href: '/dashboard/reports/interest-rate-report',
         },
+        {
+          title: 'Interest Rate Flat Report',
+          href: '/dashboard/reports/interest-rate-flat-report',
+        },
       ],
     },
   ]
