@@ -173,3 +173,27 @@ const AccountEntrySchema = z.object({
 // The full report schema with dynamic company keys
 export const CashFlowLoanReportSchema = z.record(z.string(), z.array(AccountEntrySchema));
 export type GetCashFlowLoanReportType = z.infer<typeof CashFlowLoanReportSchema>;
+
+const InterestRateReportSchema = z.object({
+  description: z.string(),
+  interestRate: z.string(),
+  totalLimit: z.string(),
+  balanceOnDate: z.string(),
+  balancePercent: z.number()
+});
+export type GetInterestRateReportType = z.infer<typeof InterestRateReportSchema>;
+
+const InterestRateFlatReportSchema = z.object({
+  interestRate: z.string(),
+  balanceOnDate: z.string(),
+  balancePercent: z.number()
+});
+export type GetInterestRateFlatReportType = z.infer<typeof InterestRateFlatReportSchema>;
+
+const BankUtilizationReportSchema = z.object({
+  bankName: z.string(),
+  limit: z.string(),
+  balanceOnDate: z.string(),
+  utilizePercent: z.number()
+});
+export type GetBankUtilizationReportType = z.infer<typeof BankUtilizationReportSchema>;

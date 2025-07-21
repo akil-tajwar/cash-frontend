@@ -5,8 +5,11 @@ import {
   CreateTransactionType,
   GetBankAccountType,
   GetBanksType,
+  GetBankUtilizationReportType,
   GetCashFlowLoanReportType,
   GetCompanyType,
+  GetInterestRateFlatReportType,
+  GetInterestRateReportType,
   GetTransactionType,
   SignInRequest,
   SignInResponse,
@@ -117,6 +120,48 @@ export async function getCashFlowLoanAcReport(
 ) {
   return fetchApi<GetCashFlowLoanReportType>({
     url: `api/report/get-cash-flow-loan-report?date=${date}`,
+    method: 'GET',
+    headers: {
+      Authorization: token,
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
+export async function getInterestRateReport(
+  reportDate: string,
+  token: string
+) {
+  return fetchApi<GetInterestRateReportType>({
+    url: `api/report/getbyInterestRate?reportDate=${reportDate}`,
+    method: 'GET',
+    headers: {
+      Authorization: token,
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
+export async function getInterestRateFlatReport(
+  reportDate: string,
+  token: string
+) {
+  return fetchApi<GetInterestRateFlatReportType>({
+    url: `api/report/getbyIntRateFlat?reportDate=${reportDate}`,
+    method: 'GET',
+    headers: {
+      Authorization: token,
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
+export async function getBankUtilizationReport(
+  reportDate: string,
+  token: string
+) {
+  return fetchApi<GetBankUtilizationReportType>({
+    url: `api/report/getUtilzationbyBank?reportDate=${reportDate}`,
     method: 'GET',
     headers: {
       Authorization: token,
