@@ -73,6 +73,10 @@ export function DashboardSidebar() {
           title: 'Bank Utilization Report',
           href: '/dashboard/reports/bank-utilization-report',
         },
+        {
+          title: 'Bank Type Utilization Report',
+          href: '/dashboard/reports/bank-type-utilization-report',
+        },
       ],
     },
   ]

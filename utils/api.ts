@@ -5,6 +5,7 @@ import {
   CreateTransactionType,
   GetBankAccountType,
   GetBanksType,
+  GetBankTypeUtilizationReportType,
   GetBankUtilizationReportType,
   GetCashFlowLoanReportType,
   GetCompanyType,
@@ -162,6 +163,20 @@ export async function getBankUtilizationReport(
 ) {
   return fetchApi<GetBankUtilizationReportType>({
     url: `api/report/getUtilzationbyBank?reportDate=${reportDate}`,
+    method: 'GET',
+    headers: {
+      Authorization: token,
+      'Content-Type': 'application/json',
+    },
+  })
+}
+
+export async function getBankTypeUtilizationReport(
+  reportDate: string,
+  token: string
+) {
+  return fetchApi<GetBankTypeUtilizationReportType>({
+    url: `api/report/getUtilzationbyBankType?reportDate=${reportDate}`,
     method: 'GET',
     headers: {
       Authorization: token,
