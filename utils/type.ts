@@ -162,6 +162,7 @@ const AccountEntrySchema = z.object({
   accountNo: z.number(),
   limit: z.number(),
   typeId: z.number(),
+  type: z.string(),
   interestRate: z.string(), // because it's quoted as a string (e.g., "91.00")
   bank: z.string(),
   openingBalance: z.number(),

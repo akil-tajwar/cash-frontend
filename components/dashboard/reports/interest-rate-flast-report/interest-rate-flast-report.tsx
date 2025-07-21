@@ -10,6 +10,8 @@ import { useAtom } from "jotai"
 import { tokenAtom, useInitializeUser } from "@/utils/user"
 import { getInterestRateFlatReport } from "@/utils/api"
 import type { GetInterestRateFlatReportType } from "@/utils/type"
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
 
 export default function InterestRateFlatReport() {
   useInitializeUser()
@@ -69,13 +71,90 @@ export default function InterestRateFlatReport() {
 
   const totals = calculateTotals()
 
+  const generateExcel = () => {
+    exportToExcel(interestRateFlatData, 'interest-rate-flat-report-' + selectedDate)
+  }
+
+  const exportToExcel = (data: GetInterestRateFlatReportType[], fileName: string) => {
+    const worksheet = XLSX.utils.json_to_sheet(flattenData(data))
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Trial Balance')
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: 'xlsx',
+      type: 'array',
+    })
+    const blob = new Blob([excelBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
+    })
+    saveAs(blob, `${fileName}.xlsx`)
+  }
+
+  const flattenData = (data: GetInterestRateFlatReportType[]): any[] => {
+    return data.map((item) => ({
+      interestRate: item.interestRate,
+      balanceOnDate: item.balanceOnDate,
+      balancePercent: item.balancePercent,
+    }))
+  }
+
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-2xl font-bold">Interest Rate Flat Report</h1>
-        <Button onClick={handlePrint} className="print:hidden">
-          Print
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={generateExcel}
+            variant="ghost"
+            className="flex items-center gap-2 bg-green-100 text-green-900 hover:bg-green-200"
+          >
+            <svg
+              className="h-4 w-4"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M14.5 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V7.5L14.5 2Z"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M14 2V8H20"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M8 13H16"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M8 17H16"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M10 9H8"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span className="font-medium">Excel</span>
+          </Button>
+          <Button onClick={handlePrint} className="print:hidden">
+            Print
+          </Button>
+        </div>
       </div>
 
       <div className="mb-4 flex flex-wrap gap-4 print:hidden items-end">
