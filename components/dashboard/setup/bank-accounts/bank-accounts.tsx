@@ -280,17 +280,7 @@ const BankAccounts = () => {
                     {account.accountNo || '-'}
                   </TableCell>
                   <TableCell>
-                    {account.accountType === 1
-                      ? 'Checking'
-                      : account.accountType === 2
-                        ? 'Savings'
-                        : account.accountType === 3
-                          ? 'Business'
-                          : account.accountType === 4
-                            ? 'Money Market'
-                            : account.accountType === 5
-                              ? 'Term Deposit'
-                              : '-'}
+                    {account.accountType}
                   </TableCell>
                   <TableCell>
                     ${account.balance?.toLocaleString() || '0.00'}
@@ -299,7 +289,7 @@ const BankAccounts = () => {
                     {account.interestRate ? `${account.interestRate}%` : '-'}
                   </TableCell>
                   <TableCell>
-                    {account.limit ? `$${account.limit.toLocaleString()}` : '-'}
+                    {account.limit ? `BDT${account.limit.toLocaleString()}` : '-'}
                   </TableCell>
                   <TableCell>{account.companyName || '-'}</TableCell>
                 </TableRow>

@@ -22,11 +22,19 @@ import {
 } from '@/components/ui/select'
 import { Popup } from '@/utils/popup'
 import { useEffect } from 'react'
-import { createTransactions, getBankAccounts, getTransactions } from '@/utils/api'
+import {
+  createTransactions,
+  getBankAccounts,
+  getTransactions,
+} from '@/utils/api'
 import { tokenAtom, useInitializeUser, userDataAtom } from '@/utils/user'
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
-import { CreateTransactionType, GetBankAccountType, GetTransactionType } from '@/utils/type'
+import {
+  CreateTransactionType,
+  GetBankAccountType,
+  GetTransactionType,
+} from '@/utils/type'
 import { CustomCombobox } from '@/utils/custom-combobox'
 
 const Transactions = () => {
@@ -270,7 +278,7 @@ const Transactions = () => {
                           : 'text-red-600'
                       }
                     >
-                      {transaction.transactionType === 'Deposit' ? '+' : '-'}$
+                      BDT{transaction.transactionType === 'Deposit' ? '+' : '-'}
                       {transaction.amount.toLocaleString()}
                     </span>
                   </TableCell>
@@ -322,14 +330,17 @@ const Transactions = () => {
 
             <div className="space-y-2">
               <Label htmlFor="details">Details *</Label>
-              <Input
-                id="details"
-                name="details"
+              <Select
                 value={formData.details}
-                onChange={handleInputChange}
-                placeholder="Enter transaction details"
-                required
-              />
+                onValueChange={(value) => handleSelectChange('details', value)}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select details" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="demo">demo</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="space-y-2">
@@ -341,21 +352,25 @@ const Transactions = () => {
                     id: bank.id!.toString(),
                     name: `${bank.accountNo} - ${bank.bankName}`,
                   }))}
-                value={formData.accountId
-                  ? {
-                      id: formData.accountId.toString(),
-                      name: bankAccounts.find((bank) => bank.id === formData.accountId)?.accountNo || 'Unnamed Bank',
-                    }
-                  : null
+                value={
+                  formData.accountId
+                    ? {
+                        id: formData.accountId.toString(),
+                        name:
+                          bankAccounts.find(
+                            (bank) => bank.id === formData.accountId
+                          )?.accountNo || 'Unnamed Bank',
+                      }
+                    : null
                 }
                 onChange={(value: { id: string; name: string } | null) => {
                   const numValue = value ? Number.parseInt(value.id, 10) : 0
                   setFormData((prev) => ({
                     ...prev,
-                    bankId: numValue
+                    accountId: numValue, // ✅ Correct key
                   }))
                 }}
-                placeholder="Select bank"
+                placeholder="Select bank account"
               />
             </div>
 
