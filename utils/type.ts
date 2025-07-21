@@ -197,3 +197,12 @@ const BankUtilizationReportSchema = z.object({
   utilizePercent: z.number()
 });
 export type GetBankUtilizationReportType = z.infer<typeof BankUtilizationReportSchema>;
+
+export const BankTypeUtilizationReportSchema = z.object({
+  bankName: z.string(),
+  accountType: z.string(),
+  limit: z.number().nonnegative(),
+  balanceOnDate: z.number(),
+  utilizePercent: z.number()
+});
+export type GetBankTypeUtilizationReportType = z.infer<typeof BankTypeUtilizationReportSchema>;
