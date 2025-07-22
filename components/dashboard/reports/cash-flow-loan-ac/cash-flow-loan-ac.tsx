@@ -19,6 +19,8 @@ import { getCashFlowLoanAcReport } from '@/utils/api'
 import type { GetCashFlowLoanReportType } from '@/utils/type'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
+import { formatIndianNumber } from '@/utils/formatNumber'
+import { format } from 'path'
 
 export default function CashFlowLoanAc() {
   useInitializeUser()
@@ -212,28 +214,28 @@ export default function CashFlowLoanAc() {
                         >
                           <TableCell>{account.accountNo}</TableCell>
                           <TableCell>{account.bank}</TableCell>
-                          <TableCell>{formatCurrency(account.limit)}</TableCell>
+                          <TableCell>BDT {formatIndianNumber((account.limit))}</TableCell>
                           <TableCell>
                             {formatInterestRate(account.interestRate)}
                           </TableCell>
                           <TableCell>
-                            {formatCurrency(account.openingBalance)}
+                            BDT {formatIndianNumber((account.openingBalance))}
                           </TableCell>
                           <TableCell>
-                            {formatCurrency(account.deposit)}
+                            BDT {formatIndianNumber((account.deposit))}
                           </TableCell>
                           <TableCell>
-                            {formatCurrency(account.withdrawal)}
+                            BDT {formatIndianNumber((account.withdrawal))}
                           </TableCell>
                           <TableCell>
-                            {formatCurrency(account.closingBalance)}
+                            BDT {formatIndianNumber((account.closingBalance))}
                           </TableCell>
                         </TableRow>
                       ))}
                       <TableRow className="font-semibold">
                         <TableCell colSpan={4}>Group Total</TableCell>
                         <TableCell>
-                          {formatCurrency(
+                          BDT {formatIndianNumber(
                             accounts.reduce(
                               (sum, account) => sum + account.openingBalance,
                               0
@@ -241,7 +243,7 @@ export default function CashFlowLoanAc() {
                           )}
                         </TableCell>
                         <TableCell>
-                          {formatCurrency(
+                          BDT {formatIndianNumber(
                             accounts.reduce(
                               (sum, account) => sum + account.deposit,
                               0
@@ -249,7 +251,7 @@ export default function CashFlowLoanAc() {
                           )}
                         </TableCell>
                         <TableCell>
-                          {formatCurrency(
+                          BDT {formatIndianNumber(
                             accounts.reduce(
                               (sum, account) => sum + account.withdrawal,
                               0
@@ -257,7 +259,7 @@ export default function CashFlowLoanAc() {
                           )}
                         </TableCell>
                         <TableCell>
-                          {formatCurrency(
+                          BDT {formatIndianNumber(
                             accounts.reduce(
                               (sum, account) => sum + account.closingBalance,
                               0

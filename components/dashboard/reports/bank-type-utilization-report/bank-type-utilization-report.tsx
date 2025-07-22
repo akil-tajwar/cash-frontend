@@ -19,6 +19,7 @@ import { getBankTypeUtilizationReport } from '@/utils/api'
 import type { GetBankTypeUtilizationReportType } from '@/utils/type'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
+import { formatIndianNumber } from '@/utils/formatNumber'
 
 export default function BankTypeUtilizationReport() {
   useInitializeUser()
@@ -192,11 +193,6 @@ export default function BankTypeUtilizationReport() {
         ) : bankTypeUtilizationData.length > 0 ? (
           <Card className="shadow-md">
             <CardContent className="p-0">
-              <div className="bg-muted/30 px-6 py-4 border-b">
-                <h3 className="text-lg font-semibold">
-                  Bank Type Utilization Analysis
-                </h3>
-              </div>
               <div className="overflow-auto">
                 <Table>
                   <TableHeader>
@@ -217,9 +213,9 @@ export default function BankTypeUtilizationReport() {
                       <TableRow key={`bank-type-utilization-${index}`}>
                         <TableCell>{item.bankName}</TableCell>
                         <TableCell>{item.accountType}</TableCell>
-                        <TableCell>{formatCurrency(item.limit)}</TableCell>
+                        <TableCell>BDT {formatIndianNumber(item.limit)}</TableCell>
                         <TableCell>
-                          {formatCurrency(item.balanceOnDate)}
+                          BDT {formatIndianNumber(item.balanceOnDate)}
                         </TableCell>
                         <TableCell>
                           {formatPercentage(item.utilizePercent)}
@@ -228,9 +224,9 @@ export default function BankTypeUtilizationReport() {
                     ))}
                     <TableRow className="font-semibold bg-muted/20">
                       <TableCell colSpan={2}>Total</TableCell>
-                      <TableCell>{formatCurrency(totals.limit)}</TableCell>
+                      <TableCell>BDT {formatIndianNumber(totals.limit)}</TableCell>
                       <TableCell>
-                        {formatCurrency(totals.balanceOnDate)}
+                        BDT {formatIndianNumber(totals.balanceOnDate)}
                       </TableCell>
                       <TableCell>
                         {formatPercentage(totals.utilizePercent)}

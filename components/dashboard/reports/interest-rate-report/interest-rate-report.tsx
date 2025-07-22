@@ -19,6 +19,7 @@ import { getInterestRateReport } from '@/utils/api'
 import type { GetInterestRateReportType } from '@/utils/type'
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
+import { formatIndianNumber } from '@/utils/formatNumber'
 
 export default function InterestRateReport() {
   useInitializeUser()
@@ -198,11 +199,6 @@ export default function InterestRateReport() {
         ) : interestRateData.length > 0 ? (
           <Card className="shadow-md">
             <CardContent className="p-0">
-              <div className="bg-muted/30 px-6 py-4 border-b">
-                <h3 className="text-lg font-semibold">
-                  Interest Rate Analysis
-                </h3>
-              </div>
               <div className="overflow-auto">
                 <Table>
                   <TableHeader>
@@ -225,9 +221,9 @@ export default function InterestRateReport() {
                         <TableCell>
                           {formatInterestRate(item.interestRate)}
                         </TableCell>
-                        <TableCell>{formatCurrency(item.totalLimit)}</TableCell>
+                        <TableCell>BDT {formatIndianNumber(Number(item.totalLimit))}</TableCell>
                         <TableCell>
-                          {formatCurrency(item.balanceOnDate)}
+                          BDT {formatIndianNumber(Number(item.balanceOnDate))}
                         </TableCell>
                         <TableCell>
                           {formatPercentage(item.balancePercent)}
@@ -238,10 +234,10 @@ export default function InterestRateReport() {
                       <TableCell>Total</TableCell>
                       <TableCell>-</TableCell>
                       <TableCell>
-                        {formatCurrency(totals.totalLimit.toString())}
+                        BDT {formatIndianNumber(Number(totals.totalLimit.toString()))}
                       </TableCell>
                       <TableCell>
-                        {formatCurrency(totals.balanceOnDate.toString())}
+                        BDT {formatIndianNumber(Number(totals.balanceOnDate.toString()))}
                       </TableCell>
                       <TableCell>
                         {formatPercentage(totals.balancePercent)}

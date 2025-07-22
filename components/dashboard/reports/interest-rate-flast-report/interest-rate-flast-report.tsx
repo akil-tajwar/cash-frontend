@@ -12,6 +12,7 @@ import { getInterestRateFlatReport } from "@/utils/api"
 import type { GetInterestRateFlatReportType } from "@/utils/type"
 import * as XLSX from 'xlsx'
 import { saveAs } from 'file-saver'
+import { formatIndianNumber } from "@/utils/formatNumber"
 
 export default function InterestRateFlatReport() {
   useInitializeUser()
@@ -182,9 +183,6 @@ export default function InterestRateFlatReport() {
         ) : interestRateFlatData.length > 0 ? (
           <Card className="shadow-md">
             <CardContent className="p-0">
-              <div className="bg-muted/30 px-6 py-4 border-b">
-                <h3 className="text-lg font-semibold">Interest Rate Flat Analysis</h3>
-              </div>
               <div className="overflow-auto">
                 <Table>
                   <TableHeader>
@@ -198,13 +196,13 @@ export default function InterestRateFlatReport() {
                     {interestRateFlatData.map((item, index) => (
                       <TableRow key={`interest-rate-flat-${index}`}>
                         <TableCell>{formatInterestRate(item.interestRate)}</TableCell>
-                        <TableCell>{formatCurrency(item.balanceOnDate)}</TableCell>
+                        <TableCell>BDT {formatIndianNumber(Number(item.balanceOnDate))}</TableCell>
                         <TableCell>{formatPercentage(item.balancePercent)}</TableCell>
                       </TableRow>
                     ))}
                     <TableRow className="font-semibold bg-muted/20">
                       <TableCell>Total</TableCell>
-                      <TableCell>{formatCurrency(totals.balanceOnDate.toString())}</TableCell>
+                      <TableCell>BDT {formatIndianNumber(Number(totals.balanceOnDate))}</TableCell>
                       <TableCell>{formatPercentage(totals.balancePercent)}</TableCell>
                     </TableRow>
                   </TableBody>

@@ -33,6 +33,7 @@ import { tokenAtom, useInitializeUser, userDataAtom } from '@/utils/user'
 import { useAtom } from 'jotai'
 import { useRouter } from 'next/navigation'
 import { CustomCombobox } from '@/utils/custom-combobox'
+import { formatIndianNumber } from '@/utils/formatNumber'
 
 const BankAccounts = () => {
   // State for popup visibility
@@ -283,13 +284,13 @@ const BankAccounts = () => {
                     {account.accountType}
                   </TableCell>
                   <TableCell>
-                    ${account.balance?.toLocaleString() || '0.00'}
+                    BDT {formatIndianNumber(account.balance)}
                   </TableCell>
                   <TableCell>
                     {account.interestRate ? `${account.interestRate}%` : '-'}
                   </TableCell>
                   <TableCell>
-                    {account.limit ? `BDT${account.limit.toLocaleString()}` : '-'}
+                    {account.limit ? `BDT ${formatIndianNumber(account.limit)}` : '-'}
                   </TableCell>
                   <TableCell>{account.companyName || '-'}</TableCell>
                 </TableRow>
